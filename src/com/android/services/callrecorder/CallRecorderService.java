@@ -23,6 +23,7 @@ import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemProperties;
+import android.text.TextUtils;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -51,9 +52,9 @@ public class CallRecorderService extends Service {
 
     private static final String AUDIO_SOURCE_PROPERTY = "persist.call_recording.src";
 
-    private int mDefaultEncoder;
-
     private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyMMdd_HHmmssSSS");
+
+    private int mDefaultEncoder;
 
     private final ICallRecorderService.Stub mBinder = new ICallRecorderService.Stub() {
         @Override
@@ -106,7 +107,7 @@ public class CallRecorderService extends Service {
         int formatValue =  Settings.System.getInt(
                 getContentResolver(), Settings.System.CALL_RECORDING_FORMAT, mDefaultEncoder);
         if (formatValue == 0){
-            return MediaRecorder.OutputFormat.AMR_NB;
+            return MediaRecorder.OutputFormat.AMR_WB;
         } else {
             return MediaRecorder.OutputFormat.MPEG_4;
         }
@@ -116,7 +117,7 @@ public class CallRecorderService extends Service {
         int formatValue =  Settings.System.getInt(
                 getContentResolver(), Settings.System.CALL_RECORDING_FORMAT, mDefaultEncoder);
         if (formatValue == 0){
-            return MediaRecorder.AudioEncoder.AMR_NB;
+            return MediaRecorder.AudioEncoder.AMR_WB;
         } else {
             return MediaRecorder.AudioEncoder.HE_AAC;
         }
@@ -203,8 +204,13 @@ public class CallRecorderService extends Service {
 
     private String generateFilename(String number) {
         String timestamp = DATE_FORMAT.format(new Date());
+
+        if (TextUtils.isEmpty(number)) {
+            number = "unknown";
+        }
+
         int audioFormat = getAudioFormat();
-        if (audioFormat == MediaRecorder.OutputFormat.AMR_NB){
+        if (audioFormat == MediaRecorder.OutputFormat.AMR_WB) {
             return number + "_" + timestamp + ".amr";
         } else {
             return number + "_" + timestamp + ".m4a ";
