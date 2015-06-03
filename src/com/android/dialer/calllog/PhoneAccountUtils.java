@@ -26,6 +26,8 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Pair;
 
+import com.android.dialer.util.AgingCache;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,9 +86,8 @@ public class PhoneAccountUtils {
         return account == null ? PhoneAccount.NO_HIGHLIGHT_COLOR : account.getHighlightColor();
     }
 
-    private static final long CACHE_ENTRY_TIMEOUT = 5000;
-    private static final ArrayMap<PhoneAccountHandle, Pair<PhoneAccount, Long>> sAccountCache =
-            new ArrayMap<>();
+    private static final AgingCache<PhoneAccountHandle, PhoneAccount> sAccountCache =
+            new AgingCache<>(5000);
 
     /**
      * Retrieve the account metadata, but if the account does not exist or the device has only a
@@ -94,23 +95,19 @@ public class PhoneAccountUtils {
      */
     private static PhoneAccount getAccountOrNull(Context context,
             PhoneAccountHandle accountHandle) {
-        Pair<PhoneAccount, Long> entry = sAccountCache.get(accountHandle);
-        if (entry != null) {
-            long age = SystemClock.elapsedRealtime() - entry.second;
-            if (age < CACHE_ENTRY_TIMEOUT) {
-                return entry.first;
-            }
+        PhoneAccount account = sAccountCache.get(accountHandle);
+        if (account != null) {
+            return account;
         }
 
         TelecomManager telecomManager =
                 (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-        final PhoneAccount account;
         if (!telecomManager.hasMultipleCallCapableAccounts()) {
             account = null;
         } else {
             account = telecomManager.getPhoneAccount(accountHandle);
         }
-        sAccountCache.put(accountHandle, Pair.create(account, SystemClock.elapsedRealtime()));
+        sAccountCache.put(accountHandle, account);
         return account;
     }
 }

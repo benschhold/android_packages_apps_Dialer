@@ -27,6 +27,7 @@ import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.contacts.common.util.PhoneNumberHelper;
+import com.android.dialer.util.AgingCache;
 
 import com.google.common.collect.Sets;
 
@@ -39,9 +40,7 @@ public class PhoneNumberUtilsWrapper {
     private static final Set<String> LEGACY_UNKNOWN_NUMBERS = Sets.newHashSet("-1", "-2", "-3");
     private final Context mContext;
 
-    private static final long VM_CACHE_TIMEOUT = 5000;
-
-    private ArrayMap<PhoneAccountHandle, Pair<String, Long>> mVmNumberCache = new ArrayMap<>();
+    private AgingCache<PhoneAccountHandle, String> mVmNumberCache = new AgingCache<>(5000);
 
     public PhoneNumberUtilsWrapper(Context context) {
         mContext = context;
@@ -62,23 +61,15 @@ public class PhoneNumberUtilsWrapper {
             return false;
         }
 
-        Pair<String, Long> cacheEntry = mVmNumberCache.get(accountHandle);
-        if (cacheEntry != null) {
-            long age = SystemClock.elapsedRealtime() - cacheEntry.second;
-            if (age >= VM_CACHE_TIMEOUT) {
-                cacheEntry = null;
-            }
-        }
-
-        if (cacheEntry == null) {
+        String vmNumber = mVmNumberCache.get(accountHandle);
+        if (vmNumber == null) {
             final TelecomManager telecomManager =
                     (TelecomManager) mContext.getSystemService(Context.TELECOM_SERVICE);
-            final String vmNumber = telecomManager.getVoiceMailNumber(accountHandle);
-            cacheEntry = Pair.create(vmNumber, SystemClock.elapsedRealtime());
-            mVmNumberCache.put(accountHandle, cacheEntry);
+            vmNumber = telecomManager.getVoiceMailNumber(accountHandle);
+            mVmNumberCache.put(accountHandle, vmNumber != null ? vmNumber : "");
         }
 
-        final String actualVmNumber = PhoneNumberUtils.extractNetworkPortionAlt(cacheEntry.first);
+        final String actualVmNumber = PhoneNumberUtils.extractNetworkPortionAlt(vmNumber);
         return !TextUtils.isEmpty(actualVmNumber)
                 && PhoneNumberUtils.compare(number.toString(), actualVmNumber);
     }
