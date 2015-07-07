@@ -17,14 +17,11 @@
 package com.android.dialer.calllog;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.provider.CallLog;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-import android.util.ArrayMap;
-import android.util.Pair;
 
 import com.android.contacts.common.util.PhoneNumberHelper;
 import com.android.dialer.util.AgingCache;

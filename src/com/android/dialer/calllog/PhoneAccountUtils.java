@@ -18,13 +18,10 @@ package com.android.dialer.calllog;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.os.SystemClock;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
 import android.text.TextUtils;
-import android.util.ArrayMap;
-import android.util.Pair;
 
 import com.android.dialer.util.AgingCache;
 
