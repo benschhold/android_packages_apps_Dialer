@@ -19,6 +19,7 @@
   <string name="nearby_places">مکان‌های نزدیک</string>
   <string name="people">افراد</string>
   <string name="enable_people_lookup_title">جستجوی افراد</string>
+  <string name="enable_people_lookup_summary">نمایش نتایج آنلاین برای افراد هنگام جستجو در شماره‌گیر</string>
   <string name="enable_reverse_lookup_title">جستجوی برعکس</string>
   <string name="date_qs_lastmonth">ماه گذشته</string>
   <string name="speed_dial_delete">حذف</string>
