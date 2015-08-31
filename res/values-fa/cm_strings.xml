@@ -22,6 +22,17 @@
   <string name="enable_people_lookup_summary">نمایش نتایج آنلاین برای افراد هنگام جستجو در شماره‌گیر</string>
   <string name="enable_reverse_lookup_title">جستجوی برعکس</string>
   <string name="date_qs_lastmonth">ماه گذشته</string>
+  <string name="date_qs_lastquarter">سه ماهه گذشته</string>
+  <string name="date_qs_lastyear">سال گذشته</string>
+  <string name="call_stats_date_filter">تنظیم محدوده زمانی</string>
+  <string name="call_stats_reset_filter">تنظیم مجدد محدوده زمانی</string>
+  <string name="call_stats_sort_by_duration">مرتب‌سازی براساس مدت تماس</string>
+  <string name="call_stats_sort_by_count">مرتب‌سازی براساس تعداد تماس</string>
+  <string name="menu_add_to_blacklist">افزودن به لیست تماس‌گیرنده‌های مسدود شده</string>
+  <string name="toast_added_to_blacklist">%s به لیست تماس‌گیرنده‌های مسدود شده افزوده شد.</string>
+  <string name="speed_dial_settings">تنظیمات تماس سریع</string>
+  <string name="speed_dial_not_set">(تنظیم نشده)</string>
+  <string name="speed_dial_replace">جایگزین کردن</string>
   <string name="speed_dial_delete">حذف</string>
   <string name="video_call">تماس ویدیویی</string>
 </resources>
