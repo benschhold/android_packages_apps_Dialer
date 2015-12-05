@@ -97,6 +97,7 @@ public abstract class ReverseLookup {
             return true;
         } else if (provider.equals(LookupSettings.RLP_HEROLD)
                 && INSTANCE instanceof HeroldReverseLookup) {
+			return true;
         } else if (provider.equals(LookupSettings.RLP_AUSKUNFT)
                 && INSTANCE instanceof AuskunftReverseLookup) {
             return true;
